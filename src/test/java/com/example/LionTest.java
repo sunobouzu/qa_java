@@ -20,8 +20,12 @@ public class LionTest {
     }
 
     @Test
-    public void testSexLion() {
+    public void testSexLion() throws Exception {
+            Lion maleLion = new Lion("Самец", felineMock);
+            assertTrue("Самец должен иметь гриву", maleLion.doesHaveMane());
 
+            Lion femaleLion = new Lion("Самка", felineMock);
+            assertTrue("Самка не должна иметь гривы", !femaleLion.doesHaveMane());
     }
 
     @Test

@@ -9,16 +9,15 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThrows;
 
 @RunWith(Parameterized.class)
-public class LionParametrizedTest  {
-
+public class LionParametrizedTest {
     private final String sex;
-    private final Boolean mane;
+    private final Boolean expectedMane;
 
     private Feline feline;
 
-    public LionParametrizedTest(String sex, Boolean mane) {
+    public LionParametrizedTest(String sex, Boolean expectedMane) {
         this.sex = sex;
-        this.mane = mane;
+        this.expectedMane = expectedMane;
     }
 
     @Parameterized.Parameters(name = "Тестовые данные: {0}")
@@ -26,7 +25,7 @@ public class LionParametrizedTest  {
         return new Object[][]{
                 {"Самец", true},
                 {"Самка", false},
-                {"Самокатчик", null},
+                {"НеправильныйПол", null},
         };
     }
 
@@ -35,17 +34,19 @@ public class LionParametrizedTest  {
         feline = new Feline();
     }
 
+    @Test
+    public void testLionValidSex() throws Exception {
+        if ("Самец".equals(sex) || "Самка".equals(sex)) {
+            Lion lion = new Lion(sex, feline);
+            assertEquals("Неверное значение гривы", expectedMane, lion.doesHaveMane());
+        }
+    }
 
     @Test
-    public void testLion() throws Exception {
-        if ("Самец".equals(sex) || "Самка".equals(sex)){
-            Lion  lion = new Lion(sex, feline);
-            assertEquals("Лев не лев", lion.doesHaveMane(), mane);
-        }
-        else {
-            Exception exceptionLionSex = assertThrows("Неизвестное значение поля пол у льва",Exception.class,()-> new Lion(sex, feline));
-            assertEquals(exceptionLionSex.getMessage(),"Используйте допустимые значения пола животного - самец или самка");
+    public void testLionInvalidSex() {
+        if ("НеправильныйПол".equals(sex)) {
+            assertThrows("Неизвестное значение поля пол у льва",
+                    Exception.class, () -> new Lion(sex, feline));
         }
     }
 }
-

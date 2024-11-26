@@ -6,7 +6,6 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThrows;
 
 @RunWith(Parameterized.class)
 public class LionParametrizedTest {
@@ -24,8 +23,7 @@ public class LionParametrizedTest {
     public static Object[][] data() {
         return new Object[][]{
                 {"Самец", true},
-                {"Самка", false},
-                {"НеправильныйПол", null},
+                {"Самка", false}
         };
     }
 
@@ -36,17 +34,8 @@ public class LionParametrizedTest {
 
     @Test
     public void testLionValidSex() throws Exception {
-        if ("Самец".equals(sex) || "Самка".equals(sex)) {
             Lion lion = new Lion(sex, feline);
             assertEquals("Неверное значение гривы", expectedMane, lion.doesHaveMane());
         }
     }
 
-    @Test
-    public void testLionInvalidSex() {
-        if ("НеправильныйПол".equals(sex)) {
-            assertThrows("Неизвестное значение поля пол у льва",
-                    Exception.class, () -> new Lion(sex, feline));
-        }
-    }
-}

@@ -4,8 +4,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 import java.util.List;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+
+import static org.junit.Assert.*;
 
 
 public class LionTest {
@@ -25,7 +25,7 @@ public class LionTest {
             assertTrue("Самец должен иметь гриву", maleLion.doesHaveMane());
 
             Lion femaleLion = new Lion("Самка", felineMock);
-            assertTrue("Самка не должна иметь гривы", !femaleLion.doesHaveMane());
+            assertFalse("Самка не должна иметь гривы", femaleLion.doesHaveMane());
     }
 
     @Test
@@ -46,5 +46,13 @@ public class LionTest {
         Mockito.when(felineMock.getFood(animalType)).thenReturn(expectedFood);
         List<String> food = lion.getFood();
         assertEquals(expectedFood, food);
+    }
+
+    @Test
+    public void testLionInvalidSex() {
+        String invalidSex = "НеправильныйПол";
+
+        assertThrows("Неизвестное значение поля пол у льва",
+                Exception.class, () -> new Lion(invalidSex, felineMock));
     }
 }
